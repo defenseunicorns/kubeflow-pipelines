@@ -1,0 +1,46 @@
+hostname: bigbang.dev
+
+
+
+# -- (Advanced) Flux reconciliation parameters.
+# The default values provided will be sufficient for the majority of workloads.
+flux:
+  interval: 2m
+  install:
+    retries: 3
+  upgrade:
+    retries: 3
+  rollback:
+    timeout: 10m
+    cleanupOnFail: true
+
+git:
+  repo: https://github.com/kubeflow/pipelines
+  path: "./chart"
+  branch: master
+
+  # -- Git credential settings for accessing private repositories
+  # Order of precedence is:
+  #   1. existingSecret
+  #   2. http credentials (username/password)
+  #   3. ssh credentials (privateKey/publicKey/knownHosts)
+  # -- Existing secret to use for git credentials, must be in the appropriate format: https://toolkit.fluxcd.io/components/source/gitrepositories/#https-authentication
+  existingSecret: ""
+
+  # -- Chart created secrets with user defined values
+  credentials:
+    # -- HTTP git credentials, both username and password must be provided
+    username: ""
+    password: ""
+
+    # -- SSH git credentials, privateKey, publicKey, and knownHosts must be provided
+    privateKey: ""
+    publicKey: ""
+    knownHosts: ""
+
+istio:
+  enabled: true
+  hosts:
+  - kubeflow.{{ .Values.hostname }}
+  gateways:
+  - "istio-system/main"

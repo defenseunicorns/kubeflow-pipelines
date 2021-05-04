@@ -1,0 +1,13 @@
+{{- if ( include "imagePullSecret" . ) }}
+apiVersion: v1
+kind: Secret
+metadata:
+  name: private-registry
+  namespace: kubeflow
+  labels:
+    app.kubernetes.io/name: kubeflow
+    app.kubernetes.io/component: "ai"
+type: kubernetes.io/dockerconfigjson
+data:
+  .dockerconfigjson: {{ template "imagePullSecret" . }}
+{{ end }}

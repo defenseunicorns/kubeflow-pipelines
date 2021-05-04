@@ -1,0 +1,14 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1beta1
+kind: GitRepository
+metadata:
+  name: kubeflow-pipelines
+  namespace: kubeflow
+spec:
+  interval: {{ .Values.flux.interval }}
+  url: {{ .Values.git.repo }}
+  ref:
+    {{- include "validRef" .Values.git | nindent 4 }}
+  {{ include "gitIgnore" . }}
+  {{- include "gitCreds" . | nindent 2 }}
+

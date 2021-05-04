@@ -1,0 +1,20 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: kubeflow-pipelines
+  namespace: kubeflow
+spec:
+  gateways:
+  {{- range .Values.istio.gateways }}
+  - {{ tpl . $ }}
+  {{- end }}
+  hosts:
+  {{- range .Values.istio.hosts }}
+    - {{ tpl . $}}
+  {{- end }}
+  http:
+  - route:
+    - destination:
+        host: ml-pipeline-ui
+        port:
+          number: 80
